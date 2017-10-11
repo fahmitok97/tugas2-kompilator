@@ -1,0 +1,23 @@
+package Tugas2;
+
+import java_cup.runtime.*;
+
+parser code {:
+	public static void main(String args[]) throws Exception {
+		new parser(new Yylex(System.in)).parse();
+	}
+:}
+
+terminal PLUS, TIMES, LPAREN, RPAREN;
+terminal Integer ID;
+
+non terminal Integer expr;
+
+precedence left PLUS;
+precedence left TIMES;
+
+expr	::= ID:n 					{: RESULT = n; :}
+            | expr:l PLUS expr:r 		{: RESULT = new Integer(l.intValue() + r.intValue()); :}
+	    	| expr:l TIMES expr:r 		{: RESULT = new Integer(l.intValue() * r.intValue()); :}
+	    	| LPAREN expr:e RPAREN 		{: RESULT = e; :}
+	    ;
