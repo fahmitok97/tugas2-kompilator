@@ -11,13 +11,19 @@ parser code {:
 terminal PLUS, TIMES, LPAREN, RPAREN;
 terminal Integer ID;
 
-non terminal Integer expr;
+non terminal Integer E;
+non terminal Integer T;
+non terminal Integer F;
 
-precedence left PLUS;
-precedence left TIMES;
 
-expr	::= ID:n 					{: RESULT = n; :}
-            | expr:l PLUS expr:r 		{: RESULT = new Integer(l.intValue() + r.intValue()); :}
-	    	| expr:l TIMES expr:r 		{: RESULT = new Integer(l.intValue() * r.intValue()); :}
-	    	| LPAREN expr:e RPAREN 		{: RESULT = e; :}
-	    ;
+E 	::= E:l PLUS T:r 		{: RESULT = new Integer(l.intValue() + r.intValue()); :}
+		| T:n 				{: RESULT = n; :}
+	;
+
+T 	::= T:l TIMES F:r 		{: RESULT = new Integer(l.intValue() * r.intValue()); :}
+		| F:n 				{: RESULT = n; :}
+	;
+
+F 	::= LPAREN E:n RPAREN	{: RESULT = n; :}
+		| ID:n 				{: RESULT = n; :}
+	;
